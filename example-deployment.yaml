@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+  labels:
+    app: example
+spec:
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+        - name: example
+          image: <image-docker>
+          ports:
+            - name: example
+              containerPort: <port-container>
+          envFrom:
+            - configMapRef:
+                name: example-config
+          volumeMounts:
+            - name: example-volume
+              mountPath: <path-container>
+#      imagePullSecrets:
+#        - name: <name-secret> image private
+      volumes:
+        - name: example-volume
+          persistentVolumeClaim:
+            claimName: example-pv-claim
+
+# kubectl apply -f example-deployment.yaml
+# kubectl create secret docker-registry <name-secret> --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
